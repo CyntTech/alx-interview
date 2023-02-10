@@ -10,7 +10,7 @@ def canUnlockAll(boxes):
     opened[0] = True
     lineup = [0]
     while lineup:
-        box = queue.pop(0)
+        box = lineup.pop(0)
         for key in boxes[box]:
             if key < len(boxes) and not opened[key]:
                 opened[key] = True
