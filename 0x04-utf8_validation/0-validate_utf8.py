@@ -1,60 +1,29 @@
 #!/usr/bin/python3
-'''Minimum Operations python3 challenge'''
+"""
+UTF-8 Validation
+"""
 
 
-def minOperations(n):
-    '''calculates the fewest number of
-    operations needed to result in exactly n H
-    characters in this file.
-    Returns:
-        Integer : if n is impossible to achieve, return 0
-    '''
-    pasted_chars = 1  # how many chars in the file
-    clipboard = 0  # how many H's copied
-    counter = 0  # operations counter
+def validUTF8(data):
+    """
+    data: a list of integers
+    Return: True if data is a valid UTF-8
+    encoding, else return False
+    """
+    byte_count = 0
 
-    while pasted_chars < n:
-        # if did not copy anything yet
-        if clipboard == 0:
-            # copyall
-            clipboard = pasted_chars
-            # increment operations counter
-            counter += 1
-
-        # if haven't pasted anything yet
-        if pasted_chars == 1:
-            # paste
-            pasted_chars += clipboard
-            # increment operations counter
-            counter += 1
-            # continue to next loop
-            continue
-
-        remaining = n - pasted_chars  # remaining chars to Paste
-        # check if impossible by checking if clipboard
-        # has more than needed to reach the number desired
-        # which also means num of chars in file is equal
-        # or more than in the clipboard.
-        # in both situations it's impossible to achieve n of chars
-        if remaining < clipboard:
-            return 0
-
-        # if can't be devided
-        if remaining % pasted_chars != 0:
-            # paste current clipboard
-            pasted_chars += clipboard
-            # increment operations counter
-            counter += 1
+    for i in data:
+        if byte_count == 0:
+            if i >> 5 == 0b110 or i >> 5 == 0b1110:
+                byte_count = 1
+            elif i >> 4 == 0b1110:
+                byte_count = 2
+            elif i >> 3 == 0b11110:
+                byte_count = 3
+            elif i >> 7 == 0b1:
+                return False
         else:
-            # copyall
-            clipboard = pasted_chars
-            # paste
-            pasted_chars += clipboard
-            # increment operations counter
-            counter += 2
-
-    # if got the desired result
-    if pasted_chars == n:
-        return counter
-    else:
-        return 0
+            if i >> 6 != 0b10:
+                return False
+            byte_count -= 1
+    return byte_count == 0
