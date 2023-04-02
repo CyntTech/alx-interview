@@ -3,7 +3,8 @@
 
  def island_perimeter(grid):
      """
-     A function that determines the perimeter of an island d     escribed in a list of integers.
+     A function that determines the perimeter of an island described 
+     in a list of integers.
      """
      perimeter = 0
      for i in range(len(grid)):
